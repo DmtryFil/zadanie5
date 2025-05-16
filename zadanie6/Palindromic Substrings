@@ -1,0 +1,31 @@
+class Solution {
+    public int countSubstrings(String s) {
+        int n = s.length();
+        int total = n;
+        
+        double center = 0.0;
+        while (center < n) {
+            int left, right;
+            if (center == (int)center) {
+                left = (int)center - 1;
+                right = (int)center + 1;
+            } else {
+                left = (int)Math.floor(center);
+                right = (int)Math.ceil(center);
+            }
+            
+            while (left >= 0 && right < n) {
+                if (s.charAt(left) != s.charAt(right)) {
+                    break;
+                }
+                total++;
+                left--;
+                right++;
+            }
+            
+            center += 0.5;
+        }
+        
+        return total;
+    }
+}
