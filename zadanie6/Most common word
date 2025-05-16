@@ -1,0 +1,26 @@
+import java.util.*;
+import java.io.*;
+
+public class MostFrequentWord {
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String text = reader.lines().collect(java.util.stream.Collectors.joining(" "));
+        String[] words = text.split("\\s+");
+        
+        Map<String, Integer> count = new HashMap<>();
+        for (String word : words) {
+            count.put(word, count.getOrDefault(word, 0) + 1);
+        }
+        
+        int maxFreq = Collections.max(count.values());
+        List<String> candidates = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : count.entrySet()) {
+            if (entry.getValue() == maxFreq) {
+                candidates.add(entry.getKey());
+            }
+        }
+        
+        candidates.sort(String::compareTo);
+        System.out.println(candidates.get(0));
+    }
+}
