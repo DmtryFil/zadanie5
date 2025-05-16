@@ -1,0 +1,40 @@
+import java.util.HashMap;
+import java.util.Map;
+
+class TrieNode {
+    Map<Integer, TrieNode> children = new HashMap<>();
+}
+
+class Solution {
+    public int findMaximumXOR(int[] nums) {
+        TrieNode root = new TrieNode();
+        int maxXor = 0;
+        
+        for (int num : nums) {
+            TrieNode node = root;
+            for (int i = 31; i >= 0; i--) {
+                int bit = (num >> i) & 1;
+                node.children.putIfAbsent(bit, new TrieNode());
+                node = node.children.get(bit);
+            }
+        }
+        
+        for (int num : nums) {
+            TrieNode node = root;
+            int currXor = 0;
+            for (int i = 31; i >= 0; i--) {
+                int bit = (num >> i) & 1;
+                int toggle = 1 - bit;
+                if (node.children.containsKey(toggle)) {
+                    currXor += (1 << i);
+                    node = node.children.get(toggle);
+                } else {
+                    node = node.children.get(bit);
+                }
+            }
+            maxXor = Math.max(maxXor, currXor);
+        }
+        
+        return maxXor;
+    }
+}
