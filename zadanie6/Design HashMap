@@ -1,0 +1,55 @@
+import java.util.ArrayList;
+import java.util.List;
+
+class MyHashMap {
+
+    private static final int SIZE = 1009;
+    private List<Entry>[] buckets;
+
+    private static class Entry {
+        int key;
+        int value;
+
+        Entry(int key, int value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    public MyHashMap() {
+        buckets = new ArrayList[SIZE];
+        for (int i = 0; i < SIZE; i++) {
+            buckets[i] = new ArrayList<>();
+        }
+    }
+
+    private int hash(int key) {
+        return key % SIZE;
+    }
+
+    public void put(int key, int value) {
+        int h = hash(key);
+        for (Entry entry : buckets[h]) {
+            if (entry.key == key) {
+                entry.value = value;
+                return;
+            }
+        }
+        buckets[h].add(new Entry(key, value));
+    }
+
+    public int get(int key) {
+        int h = hash(key);
+        for (Entry entry : buckets[h]) {
+            if (entry.key == key) {
+                return entry.value;
+            }
+        }
+        return -1;
+    }
+
+    public void remove(int key) {
+        int h = hash(key);
+        buckets[h].removeIf(entry -> entry.key == key);
+    }
+}
